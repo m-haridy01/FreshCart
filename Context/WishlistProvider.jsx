@@ -1,10 +1,12 @@
 import axios from "axios";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { AuthContext } from "./TokenContext";
 
 export let WishlistContext = createContext();
 
 export default function WishlistProvider({ children }) {
+  let {token} = useContext(AuthContext)
   const [Wishlist, setWishlist] = useState(null);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -40,7 +42,7 @@ export default function WishlistProvider({ children }) {
         `${import.meta.env.VITE_BASE_URL}/wishlist`,
         {
           headers: {
-            token: localStorage.getItem("token"),
+            token
           },
         }
       );
@@ -49,9 +51,7 @@ export default function WishlistProvider({ children }) {
       const ids = data.data.map((item) => item._id);
       setInWishList(ids);
       localStorage.setItem("MyWishList", JSON.stringify(ids));
-    } catch (err) {
-      toast.error(err?.response?.data?.message || "Something went wrong");
-    } finally {
+    }finally {
       setLoading(false);
     }
   }
@@ -78,6 +78,9 @@ export default function WishlistProvider({ children }) {
       setLoading(false);
     }
   }
+
+
+
 
   async function removeAll() {
     try {

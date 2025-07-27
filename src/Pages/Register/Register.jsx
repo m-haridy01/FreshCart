@@ -46,8 +46,7 @@ export default function Register() {
       setTimeout(() => {
         navigate("/login");
       }, 2000);
-    } catch (error) {
-      toast.error(error.response.data.message);
+      
     } finally {
       toast.dismiss(loadingTest);
     }
@@ -164,7 +163,7 @@ export default function Register() {
           <button
             disabled={formikObject.isSubmitting}
             type="submit"
-            className="bg-green-500 text-white py-2 px-4 rounded-lg mt-2.5 hover:bg-green-400"
+            className="bg-green-500 text-white py-2 px-4 rounded-lg mt-2.5 hover:bg-green-400 cursor-pointer"
           >
             {formikObject.isSubmitting ? "Registering..." : "Register"}
           </button>

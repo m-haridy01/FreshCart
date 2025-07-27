@@ -8,6 +8,7 @@ import { AuthContext } from "../../../Context/TokenContext";
 
 export default function Login() {
   document.title = "Login";
+  const {verifyToken} = useContext(AuthContext)
 
   const passwordRule = /^[A-Z][A-Za-z0-9]{5,}$/;
 
@@ -44,9 +45,9 @@ export default function Login() {
       toast.success("You have successfully logged in");
       localStorage.setItem("token", data.token);
       setToken(data.token);
+      verifyToken()
       Navigate("/");
     } catch (err) {
-      toast.error(err.response.data.message);
       console.log(err);
     } finally {
       toast.dismiss(loadingTest);
@@ -104,7 +105,7 @@ export default function Login() {
             <button
               disabled={formikObject.isSubmitting}
               type="submit"
-              className="bg-green-500 text-white py-2 px-4 rounded-lg mt-2.5 hover:bg-green-400"
+              className="bg-green-500 text-white py-2 px-4 rounded-lg mt-2.5 hover:bg-green-400 cursor-pointer"
             >
               Login
             </button>

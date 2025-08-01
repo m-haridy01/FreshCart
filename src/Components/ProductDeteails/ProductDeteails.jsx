@@ -10,17 +10,15 @@ import WishlistProvider, {
 } from "../../../Context/WishlistProvider";
 
 export default function ProductDeteails() {
-  document.title = 'Product Deteails'
+  document.title = "Product Deteails";
 
-  let { addToCart } = useContext(cartContext);
-  let { inWishList, reamoveProduct, addToWishlist } =
+  let { addToCart, disableBtnCart } = useContext(cartContext);
+  let { inWishList, reamoveProduct, addToWishlist, disableBtn } =
     useContext(WishlistContext);
   let { id } = useParams();
 
   async function getProductDetails() {
-    return await axios.get(
-      `${import.meta.env.VITE_BASE_URL}/products/${id}`
-    );
+    return await axios.get(`${import.meta.env.VITE_BASE_URL}/products/${id}`);
   }
 
   let { data, isLoading } = useQuery({
@@ -115,31 +113,37 @@ export default function ProductDeteails() {
                     : "size-10 bg-green-600/50 hover:bg-green-600 group/icon transition-all duration-300 cursor-pointer  rounded-full flex items-center justify-center"
                 }
               >
-                <Heart
-                  onClick={() =>
-                    inWishList?.includes(data?.data.data._id)
-                      ? reamoveProduct(data?.data.data._id)
-                      : addToWishlist(data?.data.data._id)
-                  }
-                  size={20}
-                  className="text-white "
-                />
+                <button
+                  disabled={disableBtn}
+                  className="disabled:cursor-not-allowed cursor-pointer"
+                >
+                  <Heart
+                    onClick={() =>
+                      inWishList?.includes(data?.data.data._id)
+                        ? reamoveProduct(data?.data.data._id)
+                        : addToWishlist(data?.data.data._id)
+                    }
+                    size={20}
+                    className="text-white "
+                  />
+                </button>
               </div>
 
               <div className=" flex items-center gap-5 grow">
                 {/* Payment */}
                 <Link to={"/payment"}>
-                  <button className="px-5 py-2.5 bg-green-700 text-white  hover:bg-green-800  rounded-md grow cursor-pointer transition-all duration-100">
+                  <button  className="px-5 py-2.5 bg-green-700 text-white  hover:bg-green-800  rounded-md grow cursor-pointer transition-all duration-100">
                     Buy Now
                   </button>
                 </Link>
 
                 {/* Add To Cart */}
                 <button
+                disabled={disableBtnCart}
                   onClick={() => {
                     addToCart(data?.data.data._id);
                   }}
-                  className="px-5 py-2.5 hover:bg-green-800 hover:text-white  bg-slate-300 text-green-500 rounded-md grow cursor-pointer transition-all duration-100"
+                  className="px-5 disabled:cursor-not-allowed  py-2.5 hover:bg-green-800 hover:text-white  bg-slate-300 text-green-500 rounded-md grow cursor-pointer transition-all duration-100"
                 >
                   Add To Cart
                 </button>
@@ -147,11 +151,13 @@ export default function ProductDeteails() {
             </div>
 
             <div className="flex  items-center justify-center gap-5 container flex-wrap  mt-10">
-              {data?.data.data.images.map((image)=>(
-                <img src={image} className="w-[100px] h-[100px] object-cover"></img>
+              {data?.data.data.images.map((image) => (
+                <img
+                  src={image}
+                  className="w-[100px] h-[100px] object-cover"
+                ></img>
               ))}
             </div>
-
           </div>
         </div>
       </div>

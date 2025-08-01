@@ -18,46 +18,41 @@ export default function Wishlist() {
     document.title = "Wishlist";
   }, []);
 
-  if (loading) {
-    return (
-      <div className="mt-[20vh] mb-[5vh] container bg-gray-100 rounded-xl p-5 dark:bg-gray-700 animate-pulse">
-        <div className="flex items-center gap-3">
-          <div className="h-6 bg-gray-200 rounded w-3/12" />
-          <div className="size-6 rounded-full flex items-center justify-center bg-main">
-            <div className="h-8 w-8 bg-gray-200 rounded-full" />
-          </div>
-        </div>
-        <div className="flex items-center justify-between flex-col lg:flex-row gap-5 not-last-of-type:border-b border-gray-600 py-5">
-          <div className="flex items-center gap-3">
-            <div className="image bg-gray-200 rounded-2xl w-[100px] h-[100px] md:w-[150px] md:h-[200px] shadow-xl border border-gray-300" />
-            <div className="space-y-1.5">
-              <div className="h-4 bg-gray-200 rounded w-3/4" />
-              <div className="h-4 bg-gray-200 rounded w-1/2" />
-              <div className="h-4 bg-gray-200 rounded w-1/2" />
-              <div className="h-4 bg-gray-200 rounded w-3/4" />
-            </div>
-          </div>
-          <div className="ml-auto">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-24 bg-gray-200 rounded" />
-              <div className="h-8 w-24 bg-gray-200 rounded" />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="mt-[20vh] mb-[5vh] container bg-gray-100 rounded-xl p-5 dark:bg-gray-700 animate-pulse">
+  //       <div className="flex items-center gap-3">
+  //         <div className="h-6 bg-gray-200 rounded w-3/12" />
+  //         <div className="size-6 rounded-full flex items-center justify-center bg-main">
+  //           <div className="h-8 w-8 bg-gray-200 rounded-full" />
+  //         </div>
+  //       </div>
+  //       <div className="flex items-center justify-between flex-col lg:flex-row gap-5 not-last-of-type:border-b border-gray-600 py-5">
+  //         <div className="flex items-center gap-3">
+  //           <div className="image bg-gray-200 rounded-2xl w-[100px] h-[100px] md:w-[150px] md:h-[200px] shadow-xl border border-gray-300" />
+  //           <div className="space-y-1.5">
+  //             <div className="h-4 bg-gray-200 rounded w-3/4" />
+  //             <div className="h-4 bg-gray-200 rounded w-1/2" />
+  //             <div className="h-4 bg-gray-200 rounded w-1/2" />
+  //             <div className="h-4 bg-gray-200 rounded w-3/4" />
+  //           </div>
+  //         </div>
+  //         <div className="ml-auto">
+  //           <div className="flex items-center gap-2">
+  //             <div className="h-8 w-24 bg-gray-200 rounded" />
+  //             <div className="h-8 w-24 bg-gray-200 rounded" />
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // haridy362001
 
   return (
     <>
       <div className="mt-[20vh] mb-[5vh] container bg-slate-100 rounded-xl p-5 dark:bg-slate-700">
-        {Wishlist?.length === 0 && (
-          <p className="text-center text-gray-500 font-semibold my-10">
-            Your wishlist is empty 
-          </p>
-        )}
         {/* top */}
         <div className="flex items-center gap-3">
           <ToHome />
@@ -68,6 +63,12 @@ export default function Wishlist() {
             <Heart size={12} className="text-white " />
           </span>
         </div>
+
+        {Wishlist?.length === 0 && (
+          <p className="text-center text-5xl font-bold text-main my-20">
+            Your wishlist is empty
+          </p>
+        )}
 
         <div>
           {Wishlist?.map((product) => (

@@ -5,7 +5,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 export default function CartItem({ item }) {
-  let { removeCartItem, updateCartItem, disableBtn } = useContext(cartContext);
+  let { removeCartItem, updateCartItem, disableBtnCart } = useContext(cartContext);
   const [count, setCount] = useState(item?.count);
 
   function updateCount() {
@@ -64,7 +64,7 @@ export default function CartItem({ item }) {
           <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
             <div className="flex items-center">
               <button
-                disabled={disableBtn}
+                disabled={disableBtnCart}
                 onClick={() => {
                   updateCartItem(item?.product?._id, item.count - 1);
                 }}
@@ -86,7 +86,7 @@ export default function CartItem({ item }) {
                 onBlur={updateCount}
               />
               <button
-                disabled={disableBtn}
+                disabled={disableBtnCart}
                 onClick={() => {
                   updateCartItem(item?.product?._id, item.count + 1);
                 }}
@@ -104,6 +104,7 @@ export default function CartItem({ item }) {
               <Trash />
             </div>
           </div>
+          
         </div>
       </div>
     </>

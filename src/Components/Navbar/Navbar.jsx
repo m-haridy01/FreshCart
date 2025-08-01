@@ -27,7 +27,7 @@ import { WishlistContext } from "../../../Context/WishlistProvider";
 export default function Navbar() {
   let navigate = useNavigate();
   let { token, setToken } = useContext(AuthContext);
-  let { cart, numOfCartItems } = useContext(cartContext);
+  let {  numOfCartItems } = useContext(cartContext);
   let { count, getUserWishList } = useContext(WishlistContext);
   let { theme, toggleTheme } = useContext(HandleThemeContext);
   let [number, setNumber] = useState(numOfCartItems);
@@ -36,7 +36,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setNumber(numOfCartItems);
-  }, [cart]);
+  }, [numOfCartItems]);
 
   useEffect(() => {
     const scrolling = () => {
@@ -156,6 +156,7 @@ export default function Navbar() {
                       className="cursor-pointer text-main"
                     />
                   </Link>
+
                   {/* WishList */}
                   <Link
                     to={"/Wishlist"}
@@ -240,7 +241,7 @@ export default function Navbar() {
                     )}
                   </span>
 
-                    {/* Login and Register */}
+                  {/* Login and Register */}
                   <Link
                     to="login"
                     className="text-slate-500 dark:text-slate-200"
@@ -253,7 +254,6 @@ export default function Navbar() {
                   >
                     Register
                   </Link>
-
                 </div>
               )}
             </div>
@@ -272,7 +272,7 @@ export default function Navbar() {
                 {links.map((link, index) => (
                   <li key={index + 1}>
                     <NavLink
-                      onClick={()=>setMenu(false)}
+                      onClick={() => setMenu(false)}
                       className={({ isActive }) =>
                         isActive
                           ? "font-extrabold text-main border-b-2 border-main "

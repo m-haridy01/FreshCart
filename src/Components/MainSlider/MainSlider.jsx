@@ -18,7 +18,7 @@ export default function MainSlider() {
     loop: true,
   };
   return (
-    <div className="grid grid-cols-[1fr, 1fr] lg:grid-cols-[2fr_1fr]  items-center justify-center my-10 mt-[20vh]">
+    <div className="grid grid-cols-[1fr, 1fr] lg:grid-cols-[2fr_1fr] container items-center justify-center my-10 mt-[20vh]">
       <Slider {...settings} className=" overflow-hidden ">
         <div>
           <img

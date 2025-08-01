@@ -1,29 +1,32 @@
 import axios from "axios";
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import toast from "react-hot-toast";
 import TokenContext, { AuthContext } from "./TokenContext";
 
 export let cartContext = createContext();
 
 export default function CartContextProvider({ children }) {
-  const {token} = useContext(AuthContext)
+  const { token } = useContext(AuthContext);
   const [cart, setCart] = useState(null);
   const [cartId, setCartId] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [disableBtn, setDisableBtn] = useState(false);
+  const [disableBtnCart, setDisableBtnCart] = useState(false);
   const [numOfCartItems, setNumberOfCarts] = useState(null);
 
   const getUserCart = useCallback(async (showLoading = true) => {
     if (showLoading) setLoading(true);
     try {
-      let { data } = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/cart`,
-        {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
-        }
-      );
+      let { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/cart`, {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      });
       setCartId(data.cartId);
       setCart(data?.data);
       setNumberOfCarts(data.numOfCartItems);
@@ -36,6 +39,8 @@ export default function CartContextProvider({ children }) {
 
   const addToCart = useCallback(
     async (productId) => {
+      let loadingTest = toast.loading("Loading...");
+      setDisableBtnCart(true);
       try {
         await axios.post(
           `${import.meta.env.VITE_BASE_URL}/cart`,
@@ -52,26 +57,40 @@ export default function CartContextProvider({ children }) {
         toast.success("The product has been added successfully.");
       } catch (err) {
         toast.error(err.message);
+      } finally {
+        toast.dismiss(loadingTest);
+        setDisableBtnCart(false);
       }
     },
     [getUserCart]
   );
 
-  const removeCartItem = useCallback(async (id) => {
-    try {
-      await axios.delete(`${import.meta.env.VITE_BASE_URL}/cart/${id}`, {
-        headers: {
-          token: localStorage.getItem("token"),
-        },
-      });
-      await getUserCart(false);
-      toast.success("The product has been successfully deleted.");
-    } catch (err) {
-      toast.error(err.message)
-    }
-  }, [getUserCart]);
+  const removeCartItem = useCallback(
+    async (id) => {
+      let loadingTest = toast.loading("Loading...");
+      setDisableBtnCart(true);
+      try {
+        await axios.delete(`${import.meta.env.VITE_BASE_URL}/cart/${id}`, {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        });
+        await getUserCart(false);
+        toast.success("The product has been successfully deleted.");
+      } catch (err) {
+        toast.error(err.message);
+      } finally {
+        toast.dismiss(loadingTest);
+        setDisableBtnCart(false);
+      }
+    },
+    [getUserCart]
+  );
 
   const clearCart = useCallback(async () => {
+    let loadingTest = toast.loading("Loading...");
+    setDisableBtnCart(true);
+
     try {
       await axios.delete(`${import.meta.env.VITE_BASE_URL}/cart`, {
         headers: {
@@ -81,13 +100,17 @@ export default function CartContextProvider({ children }) {
       await getUserCart(false);
       toast.success("All products have been successfully removed.");
     } catch (err) {
-      toast.error(err.message)
+      toast.error(err.message);
+    } finally {
+      toast.dismiss(loadingTest);
+      setDisableBtnCart(false);
     }
   }, [getUserCart]);
 
   const updateCartItem = useCallback(
     async (cartId, count) => {
-      setDisableBtn(true);
+      let loadingTest = toast.loading("Loading...");
+      setDisableBtnCart(true);
       try {
         await axios.put(
           `${import.meta.env.VITE_BASE_URL}/cart/${cartId}`,
@@ -105,21 +128,23 @@ export default function CartContextProvider({ children }) {
       } catch (err) {
         toast.error(err.response.data.message);
       } finally {
-        setDisableBtn(false);
+        setDisableBtnCart(false);
+        toast.dismiss(loadingTest);
       }
     },
     [getUserCart]
   );
 
   useEffect(() => {
-  if (token) getUserCart();
-}, [token]); 
+    if (token) getUserCart();
+  }, [token]);
 
   return (
     <cartContext.Provider
       value={{
         cartId,
-        disableBtn,
+        disableBtnCart,
+        // setDisableBtn,
         updateCartItem,
         addToCart,
         getUserCart,

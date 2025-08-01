@@ -5,8 +5,12 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import ToHome from "../../Components/ToHome/ToHome";
 import toast from "react-hot-toast";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../../../Context/TokenContext";
 export default function Orders() {
+
+  let {verifyToken} = useContext(AuthContext)
+
   async function getOrders() {
     return await axios.get(
       `${import.meta.env.VITE_BASE_URL}/orders/user/${localStorage.getItem(
@@ -21,6 +25,7 @@ export default function Orders() {
   });
 
   useEffect(() => {
+    verifyToken()
     document.title = "All Orders";
   }, []);
 
@@ -68,7 +73,7 @@ export default function Orders() {
         <h2 className="text-2xl text-main font-bold my-6">Track your orders</h2>
 
         {data?.data.length === 0 && (
-          <p className="text-center text-lg text-gray-500">
+          <p className="text-center text-5xl font-bold text-main my-20">
             You have no orders yet.
           </p>
         )}

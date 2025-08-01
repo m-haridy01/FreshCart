@@ -6,14 +6,16 @@ import { AuthContext } from "./TokenContext";
 export let WishlistContext = createContext();
 
 export default function WishlistProvider({ children }) {
-  let {token} = useContext(AuthContext)
+  let { token } = useContext(AuthContext);
   const [Wishlist, setWishlist] = useState(null);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [inWishList, setInWishList] = useState(null);
+  const [disableBtn, setDisableBtn] = useState(false);
 
   async function addToWishlist(productId) {
-    setLoading(true);
+    let loadingTest = toast.loading("Loading...");
+    setDisableBtn(true);
     try {
       let { data } = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/wishlist`,
@@ -24,40 +26,44 @@ export default function WishlistProvider({ children }) {
           },
         }
       );
-      setCount(data.data.length)
+      setCount(data.data.length);
       setInWishList(data.data);
       localStorage.setItem("MyWishList", JSON.stringify(data.data));
       toast.success(data.message + "  💚");
     } catch (err) {
       toast.error(err?.response?.data?.message || "Something went wrong");
     } finally {
-      setLoading(false);
+      toast.dismiss(loadingTest);
+      setDisableBtn(false);
     }
   }
 
   async function getUserWishList() {
-    setLoading(true);
-    try {
-      let { data } = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/wishlist`,
-        {
-          headers: {
-            token
-          },
-        }
-      );
-      setWishlist(data.data);
-      setCount(data.count);
-      const ids = data.data.map((item) => item._id);
-      setInWishList(ids);
-      localStorage.setItem("MyWishList", JSON.stringify(ids));
-    }finally {
-      setLoading(false);
+    if (token) {
+      setLoading(true);
+      try {
+        let { data } = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/wishlist`,
+          {
+            headers: {
+              token,
+            },
+          }
+        );
+        setWishlist(data.data);
+        setCount(data.count);
+        const ids = data.data.map((item) => item._id);
+        setInWishList(ids);
+        localStorage.setItem("MyWishList", JSON.stringify(ids));
+      } finally {
+        setLoading(false);
+      }
     }
   }
 
   async function reamoveProduct(id) {
-    setLoading(true);
+    let loadingTest = toast.loading("Loading...");
+    setDisableBtn(true);
     try {
       let { data } = await axios.delete(
         `${import.meta.env.VITE_BASE_URL}/wishlist/${id}`,
@@ -68,23 +74,25 @@ export default function WishlistProvider({ children }) {
         }
       );
       getUserWishList();
-      setInWishList(data.data)
-      setCount(data.data.length)
+      setInWishList(data.data);
+      setCount(data.data.length);
       localStorage.setItem("MyWishList", JSON.stringify(data.data));
       toast.success("Removed From WishList");
     } catch (err) {
-      toast.error(err?.response?.data?.message || "An error occurred while deleting This product .❌");
+      toast.error(
+        err?.response?.data?.message ||
+          "An error occurred while deleting This product .❌"
+      );
     } finally {
-      setLoading(false);
+      toast.dismiss(loadingTest);
+      setDisableBtn(false);
     }
   }
 
-
-
-
   async function removeAll() {
+    let loadingTest = toast.loading("Loading...");
+    setDisableBtn(true);
     try {
-      setLoading(true);
       for (let item of Wishlist) {
         await axios.delete(
           `${import.meta.env.VITE_BASE_URL}/wishlist/${item._id}`,
@@ -93,25 +101,31 @@ export default function WishlistProvider({ children }) {
           }
         );
       }
-      toast.success("All products have been successfully removed From WishList.");
+      toast.success(
+        "All products have been successfully removed From WishList."
+      );
       getUserWishList();
       setInWishList([]);
       localStorage.setItem("MyWishList", JSON.stringify([]));
     } catch (err) {
-      toast.error(err?.response?.data?.message || "An error occurred while deleting all products.❌");
+      toast.error(
+        err?.response?.data?.message ||
+          "An error occurred while deleting all products.❌"
+      );
     } finally {
-      setLoading(false);
+      toast.dismiss(loadingTest);
+      setDisableBtn(false);
     }
   }
 
   useEffect(() => {
-  const saved = localStorage.getItem("MyWishList");
-  if (saved) {
-    setInWishList(JSON.parse(saved));
-  } else {
-    getUserWishList();
-  }
-}, []);
+    const saved = localStorage.getItem("MyWishList");
+    if (saved) {
+      setInWishList(JSON.parse(saved));
+    } else {
+      getUserWishList();
+    }
+  }, []);
 
   return (
     <WishlistContext.Provider
@@ -122,6 +136,7 @@ export default function WishlistProvider({ children }) {
         removeAll,
         inWishList,
         Wishlist,
+        disableBtn,
         count,
         loading,
       }}

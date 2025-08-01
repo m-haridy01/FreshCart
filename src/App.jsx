@@ -55,7 +55,7 @@ export default function App() {
       children: [
         {
           index: true,
-          element: (
+          element:  (
             <ProtectedRoutes>
               <Home />
             </ProtectedRoutes>
@@ -224,15 +224,3 @@ export default function App() {
     </div>
   );
 }
-
-// ! Search
-
-// ? Today >>  jest 8:10  ||jest 11:15
-
-// ? atNight >> With Bassem >> Any Context && React Query With Contexts
-
-// ? Teusday >>  jest 16:20 || Back to Home Component && toasts
-
-// ? Wednesday >> مشاهدة المهم من الفيديوهات علي ال drive  وتطبيقه  || jest on freshCart
-
-// ? Looking For All The App With ChatGPT

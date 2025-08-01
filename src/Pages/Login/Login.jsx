@@ -1,13 +1,13 @@
 import axios from "axios";
 import { useFormik } from "formik";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { object, string } from "yup";
 import { AuthContext } from "../../../Context/TokenContext";
 
 export default function Login() {
-  document.title = "Login";
+  
   const {verifyToken} = useContext(AuthContext)
 
   const passwordRule = /^[A-Z][A-Za-z0-9]{5,}$/;
@@ -57,6 +57,10 @@ export default function Login() {
   function goToForgetPass() {
     Navigate("/forgetPassword");
   }
+
+  useEffect(() => {
+  document.title = "Login";
+}, []);
 
   return (
     <>

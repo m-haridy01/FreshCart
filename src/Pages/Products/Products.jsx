@@ -16,15 +16,15 @@ export default function Products() {
     );
   }
 
-  function setChangePage(x) {
-    setPage(x);
-  }
-
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["products", page],
     queryFn: () => GetAllProducts(page),
     keepPreviousData: true,
   });
+
+  function setChangePage(x) {
+    setPage(x);
+  }
 
   useEffect(() => {
     if (data?.data?.metadata) {
@@ -42,14 +42,14 @@ export default function Products() {
       setSearchedProducts(null);
     }
   }, [searchLetter, data]);
-  
+
   useEffect(() => {
-  document.title = 'Products';
-}, []);
+    document.title = "Products";
+  }, []);
 
   if (isError) {
-  toast.error(error?.message || "Something went wrong");
-}
+    toast.error(error?.message || "Something went wrong");
+  }
 
   if (isLoading) {
     return (
@@ -120,7 +120,6 @@ export default function Products() {
 
   return (
     <>
-      
       <div className="container mt-[20vh]">
         <div className="flex items-center justify-evenly  ">
           <input
@@ -128,17 +127,21 @@ export default function Products() {
             onInput={(e) => setSearchLetter(e.target.value)}
             value={searchLetter || ""}
             placeholder="Search..."
-            className="bg-slate-300 py-2 px-20 rounded-full placeholder:text-slate-500 focus:outline-0"
+            className="bg-slate-300 py-2 px-10 lg:px-20  rounded-full placeholder:text-slate-500 focus:outline-0"
           />
         </div>
 
         {searchedProducts ? (
-          searchedProducts.length === 0  ? <h2 className="py-25  text-4xl text-center font-semibold text-green-600"> No Products For This Search  </h2> : <DisplayProducts products={searchedProducts} />
+          searchedProducts.length === 0 ? (
+            <h2 className="py-25  text-4xl text-center font-semibold text-green-600">
+              No Products For This Search
+            </h2>
+          ) : (
+            <DisplayProducts products={searchedProducts} />
+          )
         ) : (
           <DisplayProducts products={data?.data.data} />
         )}
-
-        
 
         {/* pagination */}
         {!searchedProducts && (

@@ -10,8 +10,8 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import toast from "react-hot-toast";
 
 export default function DisplayProducts({ products }) {
-  let { addToCart } = useContext(cartContext);
-  let { addToWishlist, reamoveProduct, inWishList } =
+  let { addToCart, disableBtnCart } = useContext(cartContext);
+  let { addToWishlist, reamoveProduct, inWishList, disableBtn } =
     useContext(WishlistContext);
 
   async function GetAllProducts(page) {
@@ -27,9 +27,13 @@ export default function DisplayProducts({ products }) {
   });
 
   if (isError) {
-  toast.error(error?.response?.data?.message || "Something went wrong");
-  return <p className="text-red-500 text-center mt-4">Error In loading products.</p>;
-}
+    toast.error(error?.response?.data?.message || "Something went wrong");
+    return (
+      <p className="text-red-500 text-center mt-4">
+        Error In loading products.
+      </p>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -115,20 +119,25 @@ export default function DisplayProducts({ products }) {
                 className={
                   inWishList
                     ? inWishList?.includes(product._id)
-                      ? "size-10 hover:bg-red-600/50 bg-red-600 group/icon transition-all duration-300 cursor-pointer   opacity-0 group-hover:opacity-100 rounded-full flex items-center justify-center"
-                      : "size-10 bg-green-600/50 hover:bg-green-600 group/icon transition-all duration-300 cursor-pointer   opacity-0 group-hover:opacity-100 rounded-full flex items-center justify-center"
-                    : "size-10 bg-green-600/50 hover:bg-green-600 group/icon transition-all duration-300 cursor-pointer   opacity-0 group-hover:opacity-100 rounded-full flex items-center justify-center"
+                      ? "size-10   hover:bg-red-600/50 bg-red-600 group/icon transition-all duration-300 cursor-pointer   opacity-0 group-hover:opacity-100 rounded-full flex items-center justify-center"
+                      : "size-10   bg-green-600/50 hover:bg-green-600 group/icon transition-all duration-300 cursor-pointer   opacity-0 group-hover:opacity-100 rounded-full flex items-center justify-center"
+                    : "size-10   bg-green-600/50 hover:bg-green-600 group/icon transition-all duration-300 cursor-pointer   opacity-0 group-hover:opacity-100 rounded-full flex items-center justify-center"
                 }
               >
-                <Heart
-                  onClick={() =>
-                    inWishList?.includes(product._id)
-                      ? reamoveProduct(product._id)
-                      : addToWishlist(product._id)
-                  }
-                  size={20}
-                  className="text-white  "
-                />
+                <button
+                  disabled={disableBtn}
+                  className="disabled:cursor-not-allowed cursor-pointer"
+                >
+                  <Heart
+                    onClick={() =>
+                      inWishList?.includes(product._id)
+                        ? reamoveProduct(product._id)
+                        : addToWishlist(product._id)
+                    }
+                    size={20}
+                    className="text-white  "
+                  />
+                </button>
               </div>
 
               {/* Add To Cart */}
@@ -138,7 +147,12 @@ export default function DisplayProducts({ products }) {
                 }}
                 className="size-10  group/icon transition-all duration-300 cursor-pointer  opacity-0 group-hover:opacity-100  rounded-full bg-green-600/50 hover:bg-green-600 text-white flex items-center justify-center"
               >
-                <ShoppingCart size={20} className="text-white " />
+                <button
+                  disabled={disableBtnCart}
+                  className="disabled:cursor-not-allowed cursor-pointer"
+                >
+                  <ShoppingCart size={20} className="text-white " />
+                </button>
               </div>
 
               {/* Go To Product Details */}
@@ -202,7 +216,6 @@ export default function DisplayProducts({ products }) {
                 </span>
               </div>
             </div>
-            
           </div>
         ))}
       </div>

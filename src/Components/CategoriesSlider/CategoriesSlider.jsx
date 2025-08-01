@@ -89,7 +89,7 @@ export default function CategoriesSlider() {
 
   return (
     <>
-      <div className="slider-container ">
+      <div className="slider-container container">
         <Slider {...settings} className="my-8 ">
           {data?.data.data.map((category) => (
             <Link

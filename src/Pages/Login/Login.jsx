@@ -7,8 +7,7 @@ import { object, string } from "yup";
 import { AuthContext } from "../../../Context/TokenContext";
 
 export default function Login() {
-  
-  const {verifyToken} = useContext(AuthContext)
+  const { verifyToken } = useContext(AuthContext);
 
   const passwordRule = /^[A-Z][A-Za-z0-9]{5,}$/;
 
@@ -18,7 +17,7 @@ export default function Login() {
       .required("Password Is Required")
       .matches(
         passwordRule,
-        "Password Must Start By Capital Letter And More Than 6 Chars"
+        "Password must start by uppercase letter and be at least 6 characters long"
       ),
   });
 
@@ -45,10 +44,12 @@ export default function Login() {
       toast.success("You have successfully logged in");
       localStorage.setItem("token", data.token);
       setToken(data.token);
-      verifyToken()
+      verifyToken();
       Navigate("/");
     } catch (err) {
-      console.log(err);
+      const errorMessage =
+        err?.response?.data?.message || "Registration failed";
+      toast.error(errorMessage);
     } finally {
       toast.dismiss(loadingTest);
     }
@@ -59,8 +60,8 @@ export default function Login() {
   }
 
   useEffect(() => {
-  document.title = "Login";
-}, []);
+    document.title = "Login";
+  }, []);
 
   return (
     <>

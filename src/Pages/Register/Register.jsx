@@ -28,7 +28,7 @@ function InputField({ name, label, type, formik }) {
 }
 
 export default function Register() {
-  const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/;
+  const passwordRegex = /^[A-Z][a-z0-9]{5,}$/;
   const phoneRegex = /^01[0125][0-9]{8}$/;
   const navigate = useNavigate();
 
@@ -44,7 +44,7 @@ export default function Register() {
       .required("Password Is Required")
       .matches(
         passwordRegex,
-        "Password must contain at least one uppercase letter, one lowercase letter, one number, and be at least 6 characters long"
+        "Password must start by uppercase letter and be at least 6 characters long"
       ),
     rePassword: string("")
       .required("RePassword Is Required")
@@ -93,10 +93,9 @@ export default function Register() {
     validationSchema,
   });
 
-useEffect(() => {
-  document.title = "Register";
-}, []);
-
+  useEffect(() => {
+    document.title = "Register";
+  }, []);
 
   return (
     <form onSubmit={formikObject.handleSubmit}>

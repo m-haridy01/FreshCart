@@ -6,9 +6,9 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import ToHome from "../../Components/ToHome/ToHome";
 export default function Wishlist() {
-  let { getUserWishList, Wishlist, reamoveProduct, removeAll, loading } =
+  let { getUserWishList, Wishlist, reamoveProduct, removeAll, disableBtn } =
     useContext(WishlistContext);
-  let { addToCart } = useContext(cartContext);
+  let { addToCart, disableBtnCart } = useContext(cartContext);
 
   useEffect(() => {
     getUserWishList();
@@ -117,18 +117,21 @@ export default function Wishlist() {
               <div className="ml-auto ">
                 <div className="flex items-center gap-2 ">
                   <button
-                    disabled={loading}
+                    disabled={disableBtnCart}
                     onClick={() => addToCart(product?._id)}
-                    className="bg-main p-2 px-5 rounded-full text-sm  text-white cursor-pointer "
+                    className="bg-main disabled:cursor-not-allowed p-2 px-5 rounded-full text-sm  text-white cursor-pointer "
                   >
                     Add To Cart
                   </button>
+
                   <button
+                    disabled={disableBtn}
                     onClick={() => reamoveProduct(product?._id)}
-                    className="bg-red-500 p-2 px-5 rounded-full text-sm  text-white cursor-pointer "
+                    className="bg-red-500 disabled:cursor-not-allowed p-2 px-5 rounded-full text-sm  text-white cursor-pointer "
                   >
                     Remove
                   </button>
+
                 </div>
               </div>
             </div>
@@ -137,7 +140,8 @@ export default function Wishlist() {
 
         <div className="text-center">
           <button
-            className="bg-red-500 text-white py-3 px-5 rounded-full cursor-pointer "
+            disabled={disableBtn}
+            className="bg-red-500 disabled:cursor-not-allowed text-white py-3 px-5 rounded-full cursor-pointer "
             onClick={removeAll}
           >
             Clear My Wish List

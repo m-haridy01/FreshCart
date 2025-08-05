@@ -209,9 +209,9 @@ export default function Navbar() {
                     )}
                   </span>
                 </div>
-              ) : (
+              ) : (<>
                 <div className="flex items-center gap-5">
-                  <div className="flex justify-between items-center space-x-1.5">
+                  {/* <div className="flex justify-between items-center space-x-1.5">
                     <Facebook
                       size={20}
                       className="hover:-translate-y-1 transition-all duration-300 cursor-pointer text-blue-700"
@@ -228,7 +228,7 @@ export default function Navbar() {
                       size={20}
                       className="hover:-translate-y-1 transition-all duration-300 cursor-pointer text-blue-700"
                     />
-                  </div>
+                  </div> */}
 
                   <span onClick={toggleTheme}>
                     {theme === "light" ? (
@@ -255,7 +255,8 @@ export default function Navbar() {
                     Register
                   </Link>
                 </div>
-              )}
+                </>
+              ) }
             </div>
           </div>
 

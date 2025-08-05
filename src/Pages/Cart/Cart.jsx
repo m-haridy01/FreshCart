@@ -41,7 +41,7 @@ export default function Cart() {
 
   return (
     <>
-      <div className=" bg-gray-100 pt-20 mt-[10vh] dark:bg-slate-900 ">
+      <div className=" bg-gray-100 pt-20 mt-[10vh] dark:bg-slate-900 overflow-hidden">
         <h1 className="mb-10 text-center container text-4xl font-black text-main flex items-center justify-start gap-5">
           <ToHome />
           Cart Items

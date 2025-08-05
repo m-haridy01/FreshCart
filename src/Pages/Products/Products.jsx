@@ -120,7 +120,7 @@ export default function Products() {
 
   return (
     <>
-      <div className="container mt-[20vh]">
+      <div className="container mt-[20vh] overflow-hidden">
         <div className="flex items-center justify-evenly  ">
           <input
             type="text"

@@ -108,9 +108,13 @@ export default function Login() {
 
           <div className="flex items-center gap-5">
             <button
-              disabled={formikObject.isSubmitting}
+              disabled={
+                formikObject.isSubmitting ||
+                !formikObject.isValid ||
+                !formikObject.dirty
+              }
               type="submit"
-              className="bg-green-500 text-white py-2 px-4 rounded-lg mt-2.5 hover:bg-green-400 cursor-pointer"
+              className="bg-green-500 disabled:cursor-not-allowed disabled:opacity-50 text-white py-2 px-4 rounded-lg mt-2.5 hover:bg-green-400 cursor-pointer"
             >
               Login
             </button>

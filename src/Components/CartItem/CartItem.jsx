@@ -5,7 +5,8 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 export default function CartItem({ item }) {
-  let { removeCartItem, updateCartItem, disableBtnCart } = useContext(cartContext);
+  let { removeCartItem, updateCartItem, disableBtnCart } =
+    useContext(cartContext);
   const [count, setCount] = useState(item?.count);
 
   function updateCount() {
@@ -18,8 +19,6 @@ export default function CartItem({ item }) {
   useEffect(() => {
     setCount(item?.count);
   }, [item.count]);
-
-  
 
   return (
     <>
@@ -61,7 +60,7 @@ export default function CartItem({ item }) {
             </p>
           </div>
           {/* Updating */}
-          <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
+          <div className="mt-4 flex flex-col space-y-5 sm:flex-row justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
             <div className="flex items-center">
               <button
                 disabled={disableBtnCart}
@@ -95,16 +94,17 @@ export default function CartItem({ item }) {
                 +
               </button>
             </div>
-            <div className="flex items-center space-x-4"></div>
-            <div
+            
+            <button
               onClick={() => removeCartItem(item.product._id)}
-              className="flex items-center gap-1 cursor-pointer duration-150 text-red-600 hover:text-red-500"
+              disabled={disableBtnCart}
+              className="flex items-center gap-1 cursor-pointer duration-150 disabled:cursor-not-allowed
+              text-red-600 hover:text-red-500"
             >
               <span>Delete</span>
               <Trash />
-            </div>
+            </button>
           </div>
-          
         </div>
       </div>
     </>

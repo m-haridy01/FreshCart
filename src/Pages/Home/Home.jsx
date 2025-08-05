@@ -1,6 +1,4 @@
-// src/Pages/Home/Home.jsx
-// import React, { useEffect, useState } from "react";
-// import Skeleton from "../../Components/Skeleton/Skeleton.jsx";
+
 import Loading from "../../Components/Loading/Loading.jsx";
 import Products from "../Products/Products.jsx";
 import MainSlider from "./../../Components/MainSlider/MainSlider";
@@ -38,10 +36,8 @@ export default function Home() {
   }, [data]);
 
   useEffect(() => {
-    document.title = 'Home'
+    document.title = "Home";
   }, []);
-
-
 
   if (isError) {
     toast.error(error?.response?.data?.message || "Something went wrong");
@@ -57,11 +53,11 @@ export default function Home() {
   }
 
   return (
-    <div className="container">
+    <div className="container overflow-hidden">
       <MainSlider />
       <CategoriesSlider />
       <DisplayProducts products={data?.data.data} />
-      
+
       <div className="my-5 flex items-center justify-center gap-5 ">
         <div className="my-5 flex items-center justify-center gap-5 ">
           {[...Array(pagination?.numberOfPages)].map((item, index) => (
@@ -70,7 +66,7 @@ export default function Home() {
               onClick={() => {
                 setChangePage(index + 1);
               }}
-              className="size-8 cursor-pointer text-center text-white bg-green-500 dark:bg-slate-700 rounded-full "
+              className="size-8 cursor-pointer text-center text-white hover:bg-green-800 dark:hover:bg-main bg-green-500 dark:bg-slate-700 rounded-full transition-all duration-300"
             >
               {index + 1}
             </button>

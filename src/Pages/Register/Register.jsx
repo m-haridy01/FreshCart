@@ -139,7 +139,7 @@ export default function Register() {
             !formikObject.dirty
           }
           type="submit"
-          className="bg-green-500 text-white py-2 px-4 rounded-lg mt-2.5 hover:bg-green-400 cursor-pointer disabled:opacity-50"
+          className="bg-green-500 text-white py-2 px-4 disabled:cursor-not-allowed rounded-lg mt-2.5 hover:bg-green-400 cursor-pointer disabled:opacity-50"
         >
           {formikObject.isSubmitting ? "Registering..." : "Register"}
         </button>
